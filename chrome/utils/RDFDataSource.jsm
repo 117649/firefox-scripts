@@ -29,14 +29,7 @@ const NS_NC = "http://home.netscape.com/NC-rdf#";
 
 /* eslint prefer-template: 1 */
 
-var EXPORTED_SYMBOLS = ["RDFLiteral", "RDFBlankNode", "RDFResource", "RDFDataSource"];
-
-const {XPCOMUtils} = ChromeUtils.import("resource://gre/modules/XPCOMUtils.jsm");
-
-XPCOMUtils.defineLazyGlobalGetters(this, ["DOMParser", "Element", "fetch"]);
-
-ChromeUtils.defineModuleGetter(this, "Services",
-                               "resource://gre/modules/Services.jsm");
+const Services = globalThis.Services;
 
 function isElement(obj) {
   return Element.isInstance(obj);
@@ -96,7 +89,7 @@ class RDFNode {
 /**
  * A simple literal value
  */
-class RDFLiteral extends RDFNode {
+export class RDFLiteral extends RDFNode {
   constructor(value) {
     super();
     this._value = value;
@@ -275,7 +268,7 @@ class RDFSubject extends RDFNode {
 /**
  * Creates a new RDFResource for the datasource. Private.
  */
-class RDFResource extends RDFSubject {
+export class RDFResource extends RDFSubject {
   constructor(ds, uri) {
     super(ds);
     // This is the uri that the resource represents.
@@ -286,7 +279,7 @@ class RDFResource extends RDFSubject {
 /**
  * Creates a new blank node. Private.
  */
-class RDFBlankNode extends RDFSubject {
+export class RDFBlankNode extends RDFSubject {
   constructor(ds, nodeID) {
     super(ds);
     // The nodeID of this node. May be null if there is no ID.
@@ -371,7 +364,7 @@ class RDFBlankNode extends RDFSubject {
  * changed as assertions are added and removed to the RDF. Pass a null document
  * to start with an empty graph.
  */
-class RDFDataSource {
+export class RDFDataSource {
   constructor(document) {
     // All known resources, indexed on URI
     this._resources = {};
