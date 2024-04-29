@@ -8,13 +8,10 @@ try {
   cmanifest.append('chrome.manifest');
   Components.manager.QueryInterface(Ci.nsIComponentRegistrar).autoRegister(cmanifest);
 
-  const objRef = ChromeUtils.import('resource://gre/modules/addons/AddonSettings.jsm');
-  const temp = Object.assign({}, Object.getOwnPropertyDescriptors(objRef.AddonSettings), {
-    REQUIRE_SIGNING: { value: false }
-  });
-  objRef.AddonSettings = Object.defineProperties({}, temp);
+  const objRef = ChromeUtils.importESModule('resource://gre/modules/addons/XPIDatabase.sys.mjs');
+  objRef.XPIDatabase.SIGNED_TYPES.delete("extension");
 
-  Cu.import('chrome://userchromejs/content/BootstrapLoader.jsm');
+  Services.scriptloader.loadSubScript('chrome://userchromejs/content/BootstrapLoader.jsm');
 } catch (ex) {};
 
 try {
